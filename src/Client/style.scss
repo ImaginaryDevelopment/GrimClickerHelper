@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+
+// FontAwesome
+$fa_font_path: "~@fortawesome/fontawesome-free/webfonts";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/regular.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+
+// OpenSans
+$FontPathOpenSans: "~open-sans-fonts/open-sans";
+@import '~open-sans-fonts/open-sans';
+$family-primary: 'Open Sans';
+
+// Bulma
+@import "~bulma/bulma.sass";
+// @import '~bulma-pageloader/dist/css/bulma-pageloader.sass';
+
+div.tabs li.active{
+    text-decoration: underline;
+    border-bottom: 1px solid black;
+
+}
+.strikethrough{
+    text-decoration: line-through;
+}
+.star:after{
+    content: '*';
+    color: blue;
+}
+.text-vcenter{
+    vertical-align: center;
+}
+.bd-callout{
+    background-color: #00d1b2;
+}
+.bd-outline{
+    border: #00d1b2 1px outset;
+}
+
+.m-left{
+    margin-left: 1em;
+}
+

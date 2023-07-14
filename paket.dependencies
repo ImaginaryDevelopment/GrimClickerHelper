@@ -1,0 +1,23 @@
+group Client
+    source https://api.nuget.org/v3/index.json
+    storage: none
+
+    nuget Fable.Browser.XMLHttpRequest
+    nuget Fable.Core
+    nuget Fable.Elmish
+    nuget Fable.Elmish.Debugger
+    nuget Fable.Elmish.HMR
+    nuget Fable.Elmish.React
+    nuget Fable.React
+    nuget Fulma
+    nuget Fable.FontAwesome.Free
+
+group Build
+    source https://api.nuget.org/v3/index.json
+    storage: none
+
+    nuget FSharp.Core
+    nuget Fake.Core.ReleaseNotes
+    nuget Fake.Core.Target
+    nuget Fake.IO.FileSystem
+#    nuget Farmer
