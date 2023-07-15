@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <DefineConstants>FABLE_COMPILER</DefineConstants>
+    <!-- <DefineConstants>FABLE_COMPILER</DefineConstants> -->
   </PropertyGroup>
   <ItemGroup>
     <None Include="index.html" />
@@ -9,6 +9,7 @@
     <None Include="style.scss" />
     <Compile Include="../Shared/Shared.fs" />
     <Compile Include="Version.fs" />
+    <Compile Include="AppDomain/StatSkills.fs" />
     <Compile Include="CodeHelpers/FableHelpers.fs" />
     <Compile Include="CodeHelpers/BrowserStorage.fs" />
     <Compile Include="UIHelpers/BFulma.fs" />

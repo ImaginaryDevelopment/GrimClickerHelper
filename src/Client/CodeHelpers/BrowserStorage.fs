@@ -11,7 +11,12 @@ open Impl
 type Internal =
     // let private localStorage = Browser.Dom.self.localStorage
     // let private json = Fable.Core.JS.JSON
-    static member inline TryGet<'t when 't : equality > (key) : 't option =
+    static member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        TryGet<'t when 't : equality > (key) : 't option =
+
         localStorage.getItem key
         |> Option.ofObj
         |> Option.bind (fun x ->
@@ -24,7 +29,11 @@ type Internal =
                 result
             )
 
-    static member inline TrySave (key:string, valueOpt: 't option) : Result<unit,string> =
+    static member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        TrySave (key:string, valueOpt: 't option) : Result<unit,string> =
         printfn "trying to save"
         try
             // let pojo = Fable.Core.JsInterop.toPlainJsObj value
@@ -47,8 +56,16 @@ type Internal =
 // assumes we never want to clear a key entirely
 type StorageAccess<'t when 't : equality >(name) =
     static member CreateStorage (name) = StorageAccess(name)
-    member inline _.Get() =  Internal.TryGet<'t>(name)
-    member inline _.Save(x:'t option) = Internal.TrySave (name,x)
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        _.Get() =  Internal.TryGet<'t>(name)
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        _.Save(x:'t option) = Internal.TrySave (name,x)
 
 // perf? -> in the interest of not writing a singleton or enforcing one, we'll fetch from localstorage on each operation
 type LookupStorage<'tvalue when 'tvalue : equality >(key) =
@@ -56,27 +73,47 @@ type LookupStorage<'tvalue when 'tvalue : equality >(key) =
     do
         toGlobal (sprintf "storage_%s" key) storage
 
-    member inline __.Get():Map<string,'tvalue>=
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        __.Get():Map<string,'tvalue>=
         storage.Get()
         |> Option.defaultValue Array.empty
         |> Map.ofArray
 
-    member inline __.ToGlobal() =
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        __.ToGlobal() =
         storage.Get()
         |> toGlobal (sprintf "%sMap" key)
 
-    member inline x.TryFind key: 'tvalue option =
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        x.TryFind key: 'tvalue option =
         x.Get()
         |> Map.tryFind key
 
-    member inline x.Save(key,value) =
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        x.Save(key,value) =
         x.Get()
         |> Map.add key value
         |> Map.toArray
         |> Some
         |> storage.Save
 
-    member inline x.Remove key =
+    member
+        #if FABLE_COMPILER
+        inline
+        #endif
+        x.Remove key =
         x.Get()
         |> Map.remove key
         |> Map.toArray
