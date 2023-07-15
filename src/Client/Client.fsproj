@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <DefineConstants>FABLE_COMPILER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="index.html" />
+    <None Include="paket.references" />
+    <None Include="style.scss" />
+    <Compile Include="../Shared/Shared.fs" />
+    <Compile Include="Version.fs" />
+    <Compile Include="CodeHelpers/FableHelpers.fs" />
+    <Compile Include="CodeHelpers/BrowserStorage.fs" />
+    <Compile Include="UIHelpers/BFulma.fs" />
+    <Compile Include="Components/SharedComponents.fs" />
+    <Compile Include="Components/Summary.fs" />
+    <Compile Include="Index.fs" />
+    <Compile Include="Client.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

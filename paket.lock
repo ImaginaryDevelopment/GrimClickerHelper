@@ -139,9 +139,16 @@ NUGET
       Fable.Core (>= 3.0) - restriction: >= netstandard2.0
       Fable.FontAwesome (>= 2.0) - restriction: >= netstandard2.0
       Fable.React (>= 5.1) - restriction: >= netstandard2.0
-    Fable.React (8.0.1)
+    Fable.React (9.3)
+      Fable.React.Types (>= 18.3) - restriction: >= netstandard2.0
+      Fable.ReactDom.Types (>= 18.2) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.7.2) - restriction: >= netstandard2.0
+    Fable.React.Types (18.3) - restriction: >= netstandard2.0
       Fable.Browser.Dom (>= 2.4.4) - restriction: >= netstandard2.0
       Fable.Core (>= 3.2.7) - restriction: >= netstandard2.0
+      FSharp.Core (>= 4.7.2) - restriction: >= netstandard2.0
+    Fable.ReactDom.Types (18.2) - restriction: >= netstandard2.0
+      Fable.React.Types (>= 18.3) - restriction: >= netstandard2.0
       FSharp.Core (>= 4.7.2) - restriction: >= netstandard2.0
     FSharp.Core (6.0.3) - restriction: >= netstandard2.0
     Fulma (2.16)
