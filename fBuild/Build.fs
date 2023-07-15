@@ -20,6 +20,7 @@ let clientPath = Path.getFullName $"{baseDir}/src/Client"
 let clientProjPath = System.IO.Path.Combine(clientPath, "Client.fsproj")
 let clientDevOutPath = "output"
 let serverDeployPath = Path.getFullName $"{baseDir}/deploy"
+let serverBundlePath = Path.getFullName $"{baseDir}/docs"
 let sharedTestsPath = if hasShared then Path.getFullName $"{baseDir}/tests/Shared" else null
 let serverTestsPath = if hasServer then Path.getFullName $"{baseDir}/tests/Server" else null
 let clientTestsPath = Path.getFullName $"{baseDir}/tests/Client"
@@ -40,6 +41,7 @@ let initTargets finalTarget =
     Target.create "Clean" (fun args ->
         Shell.cleanDir serverDeployPath
         Shell.cleanDir clientDevOutPath
+        Shell.cleanDir serverBundlePath
         run dotnet "fable clean --yes" clientPath
         if args.Context.FinalTarget = "Bundle" then
             Shell.cleanDir "docs"
