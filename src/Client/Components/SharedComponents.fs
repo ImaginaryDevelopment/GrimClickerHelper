@@ -179,7 +179,7 @@ let Diagnostic mode (value:obj) =
 let Table (props:{| headers:string list;children:ReactElement seq |}) =
     table [Class "table"] [
         thead [] [
-            tr[] [
+            tr [] [
                 yield! props.headers |> Seq.map(fun h ->
                     th [Key h;Class "th"] [unbox h]
                 )
