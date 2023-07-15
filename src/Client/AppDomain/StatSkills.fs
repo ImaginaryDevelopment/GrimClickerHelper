@@ -12,7 +12,7 @@ type StrengthSkill =
     | BloodyVine
     | Indefatigability
     | ShieldMastery
-    | BonfireFlmae
+    | BonfireFlame
     | ChainStrike
     | Flex
     | General

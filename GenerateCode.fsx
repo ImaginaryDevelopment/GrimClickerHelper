@@ -85,7 +85,7 @@ module Gen =
             |> Seq.collect id
         seq {
             yield sprintf "module %s.Gen" ns
-            yield "open GrimClickerHelper"
+            yield "open AppDomain.StatSkills"
             yield! body
         }
         |> String.concat System.Environment.NewLine

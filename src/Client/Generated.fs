@@ -1,5 +1,5 @@
 module AppDomain.Gen
-open GrimClickerHelper
+open AppDomain.StatSkills
 // AppDomain.StatSkills+StrengthSkill
 let StrengthSkillCases =
   [
@@ -14,7 +14,7 @@ let StrengthSkillCases =
     "BloodyVine", StatSkills.StrengthSkill.BloodyVine
     "Indefatigability", StatSkills.StrengthSkill.Indefatigability
     "ShieldMastery", StatSkills.StrengthSkill.ShieldMastery
-    "BonfireFlmae", StatSkills.StrengthSkill.BonfireFlmae
+    "BonfireFlame", StatSkills.StrengthSkill.BonfireFlame
     "ChainStrike", StatSkills.StrengthSkill.ChainStrike
     "Flex", StatSkills.StrengthSkill.Flex
     "General", StatSkills.StrengthSkill.General

@@ -1,74 +1,34 @@
 module Components.Strength
 
-open AppDomain.Gen
+open Elmish
 
-type StrengthSkill =
-    | RageOfDarkness
-    | BloodThirstiness
-    | FlameFlow
-    | Greed
-    | March
-    | MaskOfFire
-    | FireSword
-    | BlacksmithCraft
-    | BloodyVine
-    | Indefatigability
-    | ShieldMastery
-    | BonfireFlmae
-    | ChainStrike
-    | Flex
-    | General
-    | DispelTheDarkness
-    | Fireball
-    | ApocalypseMask
-    | Armageddon
-    | FireAura
-    with
-        static member All = [
-            RageOfDarkness
-            BloodThirstiness
-            FlameFlow
-            Greed
-            March
-            MaskOfFire
-            FireSword
-            BlacksmithCraft
-            BloodyVine
-            Indefatigability
-            ShieldMastery
-            BonfireFlmae
-            ChainStrike
-            Flex
-            General
-            DispelTheDarkness
-            Fireball
-            ApocalypseMask
-            Armageddon
-            FireAura
-        ]
-        static member TryParse x =
-            match x with
-            | null | "" -> None
-            | EqualsI "RageOfDarkness" -> RageOfDarkness
-            | EqualsI "BloodThirstiness" -> BloodThirstiness
-            | EqualsI "FlameFlow" -> FlameFlow
-            | EqualsI "Greed" -> Greed
-            | EqualsI "March" -> March
-            | EqualsI "MaskOfFire" -> MaskOfFire
-            | EqualsI "FireSword" -> FireSword
-            | EqualsI "BlacksmithCraft" -> BlacksmithCraft
-            | EqualsI "BloodyVine" -> BloodyVine
-            | EqualsI "Indefatigability"
-            | EqualsI "ShieldMastery"
-            | EqualsI "BonfireFlmae"
-            | EqualsI "ChainStrike"
-            | EqualsI "Flex"
-            | EqualsI "General"
-            | EqualsI "DispelTheDarkness"
-            | EqualsI "Fireball"
-            | EqualsI "ApocalypseMask"
-            | EqualsI "Armageddon"
-            | EqualsI "FireAura"
+open AppDomain.StatSkills
+open AppDomain.Gen
+module StrengthSkill =
+    let all = StrengthSkillCases |> List.map snd
+    // let tryParse x =
+    //     match x with
+    //     | null | "" -> None
+    //     | EqualsI "RageOfDarkness" -> RageOfDarkness
+    //     | EqualsI "BloodThirstiness" -> BloodThirstiness
+    //     | EqualsI "FlameFlow" -> FlameFlow
+    //     | EqualsI "Greed" -> Greed
+    //     | EqualsI "March" -> March
+    //     | EqualsI "MaskOfFire" -> MaskOfFire
+    //     | EqualsI "FireSword" -> FireSword
+    //     | EqualsI "BlacksmithCraft" -> BlacksmithCraft
+    //     | EqualsI "BloodyVine" -> BloodyVine
+    //     | EqualsI "Indefatigability"
+    //     | EqualsI "ShieldMastery"
+    //     | EqualsI "BonfireFlmae"
+    //     | EqualsI "ChainStrike"
+    //     | EqualsI "Flex"
+    //     | EqualsI "General"
+    //     | EqualsI "DispelTheDarkness"
+    //     | EqualsI "Fireball"
+    //     | EqualsI "ApocalypseMask"
+    //     | EqualsI "Armageddon"
+    //     | EqualsI "FireAura"
 
 // type Skill = {
 //     StatRequired: int
@@ -84,4 +44,7 @@ type Msg =
     | SkillChange of StrengthSkill * int
 
 let init overrideOpt : Model * Cmd<Msg> =
-    {Skills = Map.empty}
+    let model =
+        overrideOpt
+        |> Option.defaultValue {Skills = Map.empty}
+    model, Cmd.none
