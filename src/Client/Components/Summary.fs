@@ -51,6 +51,19 @@ let update msg model : Model * Cmd<Msg> =
         |StrDiscChange v -> {model with StrDiscount= v}, Cmd.none
         |DexDiscChange v -> {model with StrDiscount= v}, Cmd.none
         |WisDiscChange v -> {model with StrDiscount= v}, Cmd.none
-
+let inputComponent (model: Model) (dispatch : Msg -> unit) =
+    ul [] [
+        li [] [
+            label [] [unbox "STR"]
+            NumberInput {
+                Name= "str"
+                Value = if model.Str >= 0 then Some 0 else None
+                OnChange = (fun nv -> nv.Value |> Option.map int |> Option.defaultValue 0 |> StatChange.StrChange |> Msg.StatChange |> dispatch)
+                Placeholder = Some "0"
+            }
+        ]
+    ]
 let view (model: Model) (dispatch : Msg -> unit) =
-    div [] []
+    div [] [
+        inputComponent model dispatch
+    ]
