@@ -11,6 +11,17 @@ open CodeHelpers.FableHelpers
 open Components.SharedComponents
 type Mask =
     | Fire
+    with
+        static member All = [
+            Fire
+        ]
+        static member TryParse (x:string) =
+            match x with
+            | EqualsI "fire" -> Some Fire
+            | _ ->
+                if not <| System.String.IsNullOrEmpty x then
+                    eprintfn "Could not parse mask: '%s'" x
+                None
 type Stats = {
     Str: int
     Dex: int
@@ -86,9 +97,37 @@ let inputComponent (model: Model) (dispatch : Msg -> unit) =
         ]
 
     ul [] [
+        let onMaskChange =
+            getTargetValue "maskSelect"
+            >> Option.iter(
+                Mask.TryParse
+                >> StatChange.MaskChange
+                >> Msg.StatChange
+                >> dispatch
+            )
+
         li [] (statInput "STR" "str" model.Stats.Str StatChange.StrChange)
         li [] (statInput "DEX" "dex" model.Stats.Dex StatChange.DexChange)
         li [] (statInput "WIS" "wis" model.Stats.Wis StatChange.WisChange)
+        li [] [
+            label [] [unbox "Mask"]
+            div [] [
+
+                select [
+                    Class "select"
+                    Value (
+                        match model.Mask with
+                        | None -> ""
+                        | Some mask -> string mask
+                    )
+                    OnChange onMaskChange
+                ] [
+                    yield option [Value ""] [unbox "Mask..."]
+                    yield! Mask.All |> Seq.map(string >> fun x -> option [Key x; Value x] [unbox x])
+                ]
+            ]
+        ]
+
         // this causes rounding on the input
         li [] (statInput "WPN" "wpn" model.WeaponBaseDamage StatChange.WeaponBaseDamageChange)
     ]
@@ -98,6 +137,13 @@ let getStrBonus strength mask =
     | Some Fire -> strength * 50 * 10 // b11
     | _ -> strength * 50 // b10
 
+// determines B15
+let getFlexBonus strength mask =
+    // improper rounding here 0.666 rounds to 1, tried float and decimal
+    // System.Math.Round((getStrBonus strength mask |> decimal) / 300m , 0, System.MidpointRounding.ToZero) |> int
+    (getStrBonus strength mask |> float) / 300.
+
+
 let strSummary strength =
     let strVal = getStrBonus strength None
     let strMult = 1.0 + float strVal / 100.0
@@ -106,17 +152,17 @@ let strSummary strength =
     // name, %, mult, text, rel inc
     [
         tr [] [
-            td [] [ unbox "STR bonus (basic)"] // name
-            td [] [ strVal |> string |> unbox] // %
-            td [] [ sprintf "%.1f" strMult |> unbox] // mult
-            td [] [ sprintf "+%i%%" strVal |> unbox] // text
+            td [Title "A10"] [ unbox "STR bonus (basic)"] // name
+            td [Title "B10"] [ strVal |> string |> unbox] // %
+            td [Title "C10"] [ sprintf "%.1f" strMult |> unbox] // mult
+            td [Title "D10"] [ sprintf "+%i%%" strVal |> unbox] // text
         ]
         tr [] [
-            td [] [ unbox "STR bonus (Mask of Fire)"] // name
-            td [] [ mofVal|> string |> unbox ]
-            td [] [ sprintf "%.1f" mofMult |> unbox]
-            td [] [ sprintf "+%i%%" mofVal|> unbox] // text
-            td [] [ mofMult / strMult |> sprintf "%.1f" |> unbox]
+            td [Title "A11"] [ unbox "STR bonus (Mask of Fire)"] // name
+            td [Title "B11"] [ mofVal|> string |> unbox ]
+            td [Title "C11"] [ sprintf "%.1f" mofMult |> unbox]
+            td [Title "D11"] [ sprintf "+%i%%" mofVal|> unbox] // text
+            td [Title "E11"] [ mofMult / strMult |> sprintf "%.1f" |> unbox]
         ]
     ]
 
@@ -125,9 +171,14 @@ let statSummaryText mask str dex wis =
     Table {|
         headers = [ "Name";"Bonus Text"]
         children = [
-            "STR", sprintf "+%i%% damage" strBonus
+            "STR", $"+%i{strBonus}%% damage"
             "DEX", sprintf "+%i max energy, +%i%% crit chance" (dex * 10) (dex * 2)
-         ] |> List.map(fun (n,v) -> tr [] [td [] [unbox n]; td [] [ unbox v]])
+            "WIS", sprintf "+%.1f mana/sec" (float wis * 0.1)
+         ] |> List.mapi(fun i (n,v) ->
+            tr [] [
+                td [Title $"F{i+1}"] [ unbox n]
+                td [Title $"G{i+1}"] [ unbox v]]
+        )
 
     |}
 let displayComponent (model: Model) (dispatch : Msg -> unit) =
@@ -143,5 +194,10 @@ let view (model: Model) (dispatch : Msg -> unit) =
         inputComponent model dispatch
         statSummaryText model.Mask model.Stats.Str model.Stats.Dex model.Stats.Wis
         displayComponent model dispatch
+        div [] [
+
+            label [Title "A15"] [unbox "Flex effect"]
+            p [Title "B15 (bugged rounding)"] [ getFlexBonus model.Stats.Str model.Mask |> sprintf "%.1f" |> unbox ]
+        ]
         div [] [model.WeaponBaseDamage.ToString("e") |> unbox]
     ]
